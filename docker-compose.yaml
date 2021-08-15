@@ -1,0 +1,98 @@
+version: '3.7'
+
+networks: 
+  hadoop:
+
+services:
+ 
+  namenode:
+    image: hadoop:3.3.1
+    build: 
+      context: .
+    container_name: namenode
+    ports: 
+      - 9871:9871
+      - 9870:9870 # HDFS UI
+      - 9869:9869
+      - 9868:9868 # Secondary Namenode port
+      - 9867:9867
+      - 9866:9866
+      - 9865:9865
+      - 9864:9864 # Datanode port
+      - 9820:9820
+      - 9000:9000
+      - 8088:8088 # Resource Manager UI
+      - 8042:8042
+    volumes: 
+      - ./conf/core-site.xml:/hadoop-3.3.1/etc/hadoop/core-site.xml
+      - ./conf/hdfs-site.xml:/hadoop-3.3.1/etc/hadoop/hdfs-site.xml
+      # - ./conf/mapred-site.xml:/hadoop-3.3.1/etc/hadoop/mapred-site.xml
+      # - ./conf/yarn-site.xml:/hadoop-3.3.1/etc/hadoop/yarn-site.xml
+    networks: 
+      - hadoop
+    command:
+      - "-c"
+      - |
+        echo "starting ssh service..."
+        service ssh start 
+
+        echo "Formating the filesystem..."
+        hdfs namenode -format
+
+        echo "Starting Namenode daemon and DataNode daemon..."
+        /hadoop-$${HADOOP_VERSION}/sbin/start-dfs.sh
+
+        echo "Making the HDFS directories required to execute MapReduce jobs..."
+        hdfs dfs -mkdir /user
+        hdfs dfs -mkdir /user/$$(whoami)
+
+        #echo "echo Coping the input files into the distributed filesystem..."
+        #bin/hdfs dfs -put etc/hadoop input
+
+        echo "Starting ResourceManager daemon and NodeManager daemon..."
+        #/hadoop-$${HADOOP_VERSION}/sbin/start-yarn.sh
+
+        sleep infinity & wait
+
+
+  # datanode:
+  #   image: hadoop:0.1
+  #   build: 
+  #     context: .
+  #   container_name: namenode
+
+  resourcemanager:
+    image: hadoop:3.3.1
+    build: 
+      context: .
+    container_name: resourcemanager
+    ports: 
+      - 9971:9871
+      - 9970:9870 # HDFS UI
+      - 9969:9869
+      - 9968:9868 # Secondary Namenode port
+      - 9967:9867
+      - 9966:9866
+      - 9965:9865
+      - 9964:9864 # Datanode port
+      - 9920:9820
+      - 9900:9000
+      - 8888:8088 # Resource Manager UI
+      - 8842:8042
+    volumes: 
+      - ./conf/core-site.xml:/hadoop-3.3.1/etc/hadoop/core-site.xml
+      - ./conf/hdfs-site.xml:/hadoop-3.3.1/etc/hadoop/hdfs-site.xml
+      # - ./conf/mapred-site.xml:/hadoop-3.3.1/etc/hadoop/mapred-site.xml
+      # - ./conf/yarn-site.xml:/hadoop-3.3.1/etc/hadoop/yarn-site.xml
+    networks: 
+      - hadoop
+    command:
+      - "-c"
+      - |
+        echo "starting ssh service..."
+        service ssh start 
+
+        echo "Starting ResourceManager daemon and NodeManager daemon..."
+        /hadoop-$${HADOOP_VERSION}/sbin/start-yarn.sh
+
+        sleep infinity & wait

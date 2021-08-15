@@ -1,19 +1,16 @@
-FROM ubuntu:16.04
+FROM openjdk:11
 
-MAINTAINER Jose Nunes https://github.com/josejnra
+ENV HADOOP_VERSION=3.3.1
 
-# Install Java and other packages
+WORKDIR /
+
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y software-properties-common \
-    ssh \
-    openssh-server \
-    rsync && \
-    add-apt-repository ppa:webupd8team/java -y && \
-    apt-get update && \
-    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-    apt-get install -y oracle-java8-installer && \
-    apt-get clean
+                       ssh \
+                       pdsh \
+                       openssh-server \
+                       rsync
 
 # create ssh
 RUN ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa && \
@@ -21,15 +18,14 @@ RUN ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa && \
     chmod 0600 ~/.ssh/authorized_keys && \
     ssh-keyscan -H localhost >> ~/.ssh/known_hosts
 
-ADD hadoop-3.2.0.tar.gz /
+RUN wget https://downloads.apache.org/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
+    tar zxf hadoop-${HADOOP_VERSION}.tar.gz && \
+    rm -r hadoop-${HADOOP_VERSION}.tar.gz
 
-# hadoop configs
-COPY conf/*.xml /hadoop-3.2.0/etc/hadoop/
-RUN echo "export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")" >> /hadoop-3.2.0/etc/hadoop/hadoop-env.sh
+# set java version to hadoop env
+RUN echo "export JAVA_HOME=$(echo $JAVA_HOME)" >> /hadoop-${HADOOP_VERSION}/etc/hadoop/hadoop-env.sh
 
-# Define commonly used JAVA_HOME variable
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
-ENV PATH=$PATH:/hadoop-3.2.0/bin
+ENV PATH=$PATH:/hadoop-${HADOOP_VERSION}/bin
 
 # Hadoop env
 ENV HDFS_NAMENODE_USER root
@@ -38,11 +34,7 @@ ENV HDFS_SECONDARYNAMENODE_USER root
 ENV YARN_RESOURCEMANAGER_USER root
 ENV YARN_NODEMANAGER_USER root
 
-# script to start hadoop
-COPY start.sh /start-hadoop.sh
-RUN chmod +x /start-hadoop.sh
+# expose multiple ports
+EXPOSE 9871 9870 9869 9868 9867 9866 9865 9864 9820 9000 8088
 
-# expose various ports
-EXPOSE 8088 50070 50075 50030 50060 9000
-
-ENTRYPOINT /start-hadoop.sh
+ENTRYPOINT ["/bin/bash"]
