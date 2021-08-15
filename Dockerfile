@@ -41,7 +41,7 @@ ENV YARN_RESOURCEMANAGER_USER root
 ENV YARN_NODEMANAGER_USER root
 ENV HADOOP_HOME /home/hadoop/hadoop-${HADOOP_VERSION}
 
-# expose multiple ports
+# expose several ports
 EXPOSE 9871 9870 9869 9868 9867 9866 9865 9864 9820 9000 8088
 
 ENTRYPOINT ["/bin/bash"]

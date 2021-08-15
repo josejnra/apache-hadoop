@@ -21,7 +21,7 @@
   
   <property>
     <name>yarn.resourcemanager.hostname</name>
-    <value>localhost</value>
+    <value>resourcemanager</value>
   </property>
 
   <property>
