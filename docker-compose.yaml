@@ -1,92 +1,54 @@
-version: '3.7'
-
-networks: 
-  hadoop:
-
 services:
 
+  # HDFS - namenode
   namenode:
-    image: hadoop:3.3.1
-    build: 
+    image: apache/hadoop:3.4.0
+    build:
       context: .
+      dockerfile: apache.dockerfile
     container_name: namenode
-    ports: 
+    hostname: namenode
+    command: ["hdfs", "namenode"]
+    ports:
       - 9870:9870 # HDFS UI
-      - 9868:9868 # Secondary Namenode port
-    volumes: 
-      - ./conf/core-site.xml:/home/hadoop/hadoop-3.3.1/etc/hadoop/core-site.xml
-      - ./conf/hdfs-site.xml:/home/hadoop/hadoop-3.3.1/etc/hadoop/hdfs-site.xml
-      - ./conf/mapred-site.xml:/home/hadoop/hadoop-3.3.1/etc/hadoop/mapred-site.xml
-      - ./conf/yarn-site.xml:/home/hadoop/hadoop-3.3.1/etc/hadoop/yarn-site.xml
-    networks:
-      - hadoop
-    command:
-      - "-c"
-      - |
-        echo "Starting ssh service..."
-        service ssh start 
+    env_file:
+      - ./hadoop.env
+    environment:
+        # ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
+        ENSURE_NAMENODE_DIR: "/opt/hadoop/namenode"
 
-        echo "Formating the filesystem..."
-        hdfs namenode -format
-
-        echo "Starting Namenode daemon..."
-        hdfs --config /home/hadoop/hadoop-3.3.1/etc/hadoop --daemon start namenode
-
-        # TODO: find a better way to solve this issue
-        echo "Waiting for datanodes to connect..."
-        sleep 10
-
-        echo "Creating the HDFS directories required to execute MapReduce jobs..."
-        hdfs dfs -mkdir /user
-        hdfs dfs -mkdir /user/$$(whoami)
-
-        tail -f /home/hadoop/hadoop-3.3.1/logs/*log
-
+  # HDFS - datanode
   datanode:
-    image: hadoop:3.3.1
-    build: 
+    image: apache/hadoop:3.4.0
+    build:
       context: .
+      dockerfile: apache.dockerfile
     container_name: datanode
-    ports: 
-      - 9864:9864 # Datanode port
-    volumes: 
-      - ./conf/core-site.xml:/home/hadoop/hadoop-3.3.1/etc/hadoop/core-site.xml
-      - ./conf/hdfs-site.xml:/home/hadoop/hadoop-3.3.1/etc/hadoop/hdfs-site.xml
-      - ./conf/mapred-site.xml:/home/hadoop/hadoop-3.3.1/etc/hadoop/mapred-site.xml
-      - ./conf/yarn-site.xml:/home/hadoop/hadoop-3.3.1/etc/hadoop/yarn-site.xml
-    networks:
-      - hadoop
-    command:
-      - "-c"
-      - |
-        echo "Starting ssh service..."
-        service ssh start 
+    command: ["hdfs", "datanode"]
+    env_file:
+      - ./hadoop.env
 
-        echo "Formating the filesystem..."
-        hdfs datanode -regular
-
-        echo "Starting DataNode daemon..."
-        hdfs --config /home/hadoop/hadoop-3.3.1/etc/hadoop --daemon start datanode
-
-
+  # YARN - RM
   resourcemanager:
-    image: hadoop:3.3.1
-    build: 
+    image: apache/hadoop:3.4.0
+    build:
       context: .
-    container_name: resourcemanager
-    ports: 
-      - 8088:8088 # Resource Manager UI
-      - 8042:8042
-    networks: 
-      - hadoop
-    command:
-      - "-c"
-      - |
-        echo "Starting ssh service..."
-        service ssh start 
+      dockerfile: apache.dockerfile
+    container_name: yarn
+    hostname: resourcemanager
+    command: ["yarn", "resourcemanager"]
+    ports:
+        - 8088:8088 # Resource Manager UI
+    env_file:
+      - ./hadoop.env
 
-        echo "Starting ResourceManager daemon and NodeManager daemon..."
-        yarn --config /home/hadoop/hadoop-3.3.1/etc/hadoop --daemon start resourcemanager
-        yarn --config /home/hadoop/hadoop-3.3.1/etc/hadoop --daemon start nodemanager
-
-        tail -f /home/hadoop/hadoop-3.3.1/logs/*log
+  # YARN - NM
+  nodemanager:
+    image: apache/hadoop:3.4.0
+    build:
+      context: .
+      dockerfile: apache.dockerfile
+    container_name: yarnnm
+    command: ["yarn", "nodemanager"]
+    env_file:
+      - ./hadoop.env
