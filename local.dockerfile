@@ -10,7 +10,7 @@ RUN apt-get update && \
                        net-tools \
                        vim
 
-ENV HADOOP_VERSION 3.3.1
+ENV HADOOP_VERSION 3.4.0
 
 # RUN useradd -rm -d /home/hadoop -s /bin/bash -g root -G sudo hadoop
 
@@ -22,6 +22,7 @@ WORKDIR /home/hadoop
 RUN ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa && \
     cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys && \
     chmod 0600 ~/.ssh/authorized_keys && \
+    /etc/init.d/ssh start && \
     ssh-keyscan -H localhost >> ~/.ssh/known_hosts
 
 RUN wget https://downloads.apache.org/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
