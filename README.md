@@ -100,6 +100,10 @@ The mapper function handles the input data and runs a function on every input sp
 
 
 ## References
+- [HDFS default config](https://hadoop.apache.org/docs/r3.4.0/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml)
+- [Hadoop CORE common default config](https://hadoop.apache.org/docs/r3.4.0/hadoop-project-dist/hadoop-common/core-default.xml)
+- [MapReduce default config](https://hadoop.apache.org/docs/r3.4.0/hadoop-mapreduce-client/hadoop-mapreduce-client-core/mapred-default.xml)
+- [YARN default config](https://hadoop.apache.org/docs/r3.4.0/hadoop-yarn/hadoop-yarn-common/yarn-default.xml)
 - [Hadoop Architecture and Components Explained](https://www.simplilearn.com/tutorials/hadoop-tutorial/hadoop-architecture)
 - [Hadoop Architecture](https://www.geeksforgeeks.org/hadoop-architecture/)
 - [What Is Hadoop Yarn Architecture & It’s Components](https://www.upgrad.com/blog/what-is-hadoop-yarn-architecture-its-components/)
