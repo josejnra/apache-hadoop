@@ -6,10 +6,6 @@ Hadoop is a framework permitting the storage of large volumes of data on node sy
 - Hadoop MapReduce to process data in a distributed fashion
 - Zookeeper to ensure synchronization across a cluster
 
-<p align="center">
-    <img src="images/hadoop-architecture.png" alt="Hadoop Architecture overview" />
-</p>
-
 ## HDFS
 
 The **Hadoop Distributed File System** (HDFS) is Hadoop’s storage layer. Housed on multiple servers, data is divided into blocks based on file size. These blocks are then randomly distributed and stored across slave machines. There are three components of the Hadoop Distributed File System:  
@@ -19,8 +15,9 @@ The **Hadoop Distributed File System** (HDFS) is Hadoop’s storage layer. House
 - Slave Node: Contains the actual data in the form of blocks
 
 <p align="center">
-    <img src="images/hdfs-architecture.png" alt="Hadoop Architecture overview" />
+    <img src="images/hadoop-architecture.png" alt="Hadoop Architecture overview" />
 </p>
+
 
 ### NameNode
 NameNode is the master server. In a non-high availability cluster, there can be only one NameNode. In a high availability cluster, there is a possibility of two NameNodes, and if there are two NameNodes there is no need for a secondary NameNode. 
@@ -28,6 +25,10 @@ NameNode holds metadata information on the various DataNodes, their locations, t
 
 ### Secondary NameNode
 The secondary NameNode server is responsible for maintaining a copy of the metadata in the disk. The main purpose of the secondary NameNode is to create a new NameNode in case of failure. In a high availability cluster, there are two NameNodes: active and standby. The secondary NameNode performs a similar function to the standby NameNode.
+
+<p align="center">
+    <img src="images/hdfs-architecture.png" alt="Hadoop Architecture overview" />
+</p>
 
 
 ### Datanodes
