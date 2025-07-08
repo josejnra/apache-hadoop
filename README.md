@@ -19,7 +19,7 @@ The **Hadoop Distributed File System** (HDFS) is Hadoop’s storage layer. House
 - Slave Node: Contains the actual data in the form of blocks
 
 <p align="center">
-    <img src="images/hadoop-architecture.png" alt="Hadoop Architecture overview" />
+    <img src="images/hdfs-architecture.png" alt="Hadoop Architecture overview" />
 </p>
 
 ### NameNode
@@ -100,10 +100,10 @@ The mapper function handles the input data and runs a function on every input sp
 
 
 ## References
-- [HDFS default config](https://hadoop.apache.org/docs/r3.4.0/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml)
-- [Hadoop CORE common default config](https://hadoop.apache.org/docs/r3.4.0/hadoop-project-dist/hadoop-common/core-default.xml)
-- [MapReduce default config](https://hadoop.apache.org/docs/r3.4.0/hadoop-mapreduce-client/hadoop-mapreduce-client-core/mapred-default.xml)
-- [YARN default config](https://hadoop.apache.org/docs/r3.4.0/hadoop-yarn/hadoop-yarn-common/yarn-default.xml)
+- [HDFS default config](https://hadoop.apache.org/docs/r3.4.1/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml)
+- [Hadoop CORE common default config](https://hadoop.apache.org/docs/r3.4.1/hadoop-project-dist/hadoop-common/core-default.xml)
+- [MapReduce default config](https://hadoop.apache.org/docs/r3.4.1/hadoop-mapreduce-client/hadoop-mapreduce-client-core/mapred-default.xml)
+- [YARN default config](https://hadoop.apache.org/docs/r3.4.1/hadoop-yarn/hadoop-yarn-common/yarn-default.xml)
 - [Hadoop Architecture and Components Explained](https://www.simplilearn.com/tutorials/hadoop-tutorial/hadoop-architecture)
 - [Hadoop Architecture](https://www.geeksforgeeks.org/hadoop-architecture/)
 - [What Is Hadoop Yarn Architecture & It’s Components](https://www.upgrad.com/blog/what-is-hadoop-yarn-architecture-its-components/)
