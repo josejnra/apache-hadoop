@@ -61,6 +61,20 @@ Node Manager tracks running jobs and sends signals (or heartbeats) to the resour
 ### Container
 Container houses a collection of resources like RAM, CPU, and network bandwidth. Allocations are based on what YARN has calculated for the resources. The container provides the rights to an application to use specific resource amounts.
 
+#### Resource Enforcement
+YARN ensures containers stay within limits using the Node Manager:
+*   **Memory**: Enforced by monitoring. If the process tree uses more memory than allocated, the Node Manager **kills the container**.
+*   **CPU**: Enforced by scheduling or OS properties (Linux Cgroups). If exceeding limits, the kernel **throttles** the process, but typically does not kill it.
+
+### YARN Container vs Docker Container
+While both YARN containers and Docker containers are used for resource isolation, they serve different purposes and operate at different levels of abstraction.
+
+*   **YARN Container**: It is a logical construct within the Hadoop ecosystem representing a resource allocation (memory, CPU) on a specific node. It is not necessarily a standalone isolated environment like a Docker container. It is a process launched by the NodeManager to run a task (like a MapReduce task).
+*   **Docker Container**: It is a standardized unit of software that packages up code and all its dependencies so the application runs quickly and reliably from one computing environment to another. It uses OS-level virtualization to deliver software in packages called containers.
+
+In summary, a YARN container is primarily about resource reservation for a process, whereas a Docker container is about environment isolation and portability.
+
+
 
 ### Steps to Running an application in YARN
 
