@@ -3,7 +3,7 @@
 
 FROM apache/hadoop-runner
 
-ENV HADOOP_VERSION 3.4.1
+ENV HADOOP_VERSION 3.4.2
 
 ARG HADOOP_URL=https://dlcdn.apache.org/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz
 

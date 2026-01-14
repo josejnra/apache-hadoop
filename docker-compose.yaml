@@ -2,7 +2,7 @@ services:
 
   # HDFS - namenode
   namenode:
-    image: apache/hadoop:3.4.1
+    image: apache/hadoop:3.4.2
     build:
       context: .
       dockerfile: apache.dockerfile
@@ -19,7 +19,7 @@ services:
 
   # HDFS - datanode
   datanode:
-    image: apache/hadoop:3.4.1
+    image: apache/hadoop:3.4.2
     build:
       context: .
       dockerfile: apache.dockerfile
@@ -30,7 +30,7 @@ services:
 
   # YARN - RM
   resourcemanager:
-    image: apache/hadoop:3.4.1
+    image: apache/hadoop:3.4.2
     build:
       context: .
       dockerfile: apache.dockerfile
@@ -44,7 +44,7 @@ services:
 
   # YARN - NM
   nodemanager:
-    image: apache/hadoop:3.4.1
+    image: apache/hadoop:3.4.2
     build:
       context: .
       dockerfile: apache.dockerfile
